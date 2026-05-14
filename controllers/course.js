@@ -143,8 +143,6 @@ exports.search = async (req, res) => {
         separatedSearch.push(newWord)
     });
 
-    console.log(separatedSearch);
-    res.end()
     // let results = new Set();
 
     // separatedSearch.forEach((word) => {
