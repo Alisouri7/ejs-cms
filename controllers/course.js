@@ -133,5 +133,21 @@ exports.edit = async (req, res) => {
 };
 
 exports.search = async (req, res) => {
-    
+    const { search } = req.body;
+
+    let separated = search.split(' ');
+    let separatedSearch = [];
+
+    separated.forEach(word => {
+        word.toLowerCase()
+        separatedSearch.push(word)
+    });
+
+    console.log(separatedSearch);
+    res.end()
+    // let results = new Set();
+
+    // separatedSearch.forEach((word) => {
+
+    // })
 }
