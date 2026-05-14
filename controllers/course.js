@@ -139,8 +139,8 @@ exports.search = async (req, res) => {
     let separatedSearch = [];
 
     separated.forEach(word => {
-        word.toLowerCase()
-        separatedSearch.push(word)
+       let newWord = word.toLowerCase()
+        separatedSearch.push(newWord)
     });
 
     console.log(separatedSearch);
