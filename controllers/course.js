@@ -143,9 +143,21 @@ exports.search = async (req, res) => {
         separatedSearch.push(newWord)
     });
 
-    // let results = new Set();
+    const allCourses = await courseModel.find({}).lean();
 
-    // separatedSearch.forEach((word) => {
+    let   firstSearch = [];
+    
+    allCourses.forEach((course) => {
+        let separatedTitle = course.title.split(' ');
 
-    // })
+        for (let i = 0; i < separatedTitle.length; i++) {
+            for (let j = 0; j < separatedSearch.length; j++) {
+                if (separatedTitle[i].title.toLowerCase() === separatedSearch[j]) {
+                    firstSearch.push(course)
+                }
+            }
+        }
+    })
+
+
 }
