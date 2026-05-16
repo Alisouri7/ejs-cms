@@ -119,8 +119,8 @@ exports.edit = async (req, res) => {
     const course = await courseModel.findOneAndUpdate({ _id: id }, {
         title
     });
-    
-    const courseWithNewTitle = await courseModel.findOne({_id: id}).lean();
+
+    const courseWithNewTitle = await courseModel.findOne({ _id: id }).lean();
 
     const coursesDir = path.join('C:', 'Users', 'Ali Souri', 'Desktop', 'css', 'NodeJS Course', 'Template Engines', 'practice-ejs-cms', 'public', 'images', 'courses');
 
@@ -139,25 +139,54 @@ exports.search = async (req, res) => {
     let separatedSearch = [];
 
     separated.forEach(word => {
-       let newWord = word.toLowerCase()
+        let newWord = word.toLowerCase()
         separatedSearch.push(newWord)
     });
 
     const allCourses = await courseModel.find({}).lean();
 
-    let   firstSearch = [];
-    
+    let firstSearchResult = [];
+
     allCourses.forEach((course) => {
         let separatedTitle = course.title.split(' ');
 
         for (let i = 0; i < separatedTitle.length; i++) {
-            for (let j = 0; j < separatedSearch.length; j++) {
-                if (separatedTitle[i].title.toLowerCase() === separatedSearch[j]) {
-                    firstSearch.push(course)
-                }
+            let loweredCaseTitle = separatedTitle[i].toLowerCase();
+
+            if (loweredCaseTitle === separatedSearch[0]) {
+                firstSearchResult.push(course)
             }
+
         }
     })
 
+    let searchResult = [];
+
+    for (let i = 0; i < separatedSearch.length; i++) {
+        for (let j = 0; j < firstSearchResult.length; j++) {
+            let loweredCaseTitle = firstSearchResult[j].title.toLowerCase();
+            let separatedTitle = loweredCaseTitle.split(' ');
+
+            separatedTitle.forEach((title) => {
+                if (separatedSearch[i] === title) {
+                    searchResult.push(firstSearchResult[j])
+                }
+            })
+
+        }
+    }
+
+    if (searchResult.length === 0) {
+        res.render('index', {
+            courses: [],
+            error: { message: 'هیچ دوره ای با این نام یافت نشد' },
+            title: 'Courses Page'
+        })
+    } else {
+        res.render('index', {
+            courses: searchResult,
+            title: 'Courses Page'
+        })
+    }
 
 }

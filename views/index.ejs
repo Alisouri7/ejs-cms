@@ -161,6 +161,7 @@
 
         <!-- Courses List -->
         <ul class="courses-list">
+          <%= (typeof error !=='undefined' && error.message) ? error.message : '' %>
           <% courses.forEach((course)=> { %>
             <li class="courses-item">
               <div class="courses-img-title">
